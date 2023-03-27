@@ -1,6 +1,7 @@
 name: Build x86_64 AppImage
 
 on:
+  release:
   workflow_dispatch:
 
 jobs:
