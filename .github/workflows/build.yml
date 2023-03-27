@@ -1,10 +1,10 @@
-name: Build
+name: Build x86_64 AppImage
 
 on:
   workflow_dispatch:
 
 jobs:
-  ubuntu-2004:
+  AppImage_x86_64_Build:
     strategy:
       fail-fast: false
       matrix:
@@ -37,8 +37,8 @@ jobs:
         with:
           submodules: "recursive"
 
-      - name: Build wesnoth, wesnothd, campaignd and unit tests
-        id: build # needed to check step outcome
+      - name: Build wesnoth
+        id: build
         run: |
           case $TOOL in
             scons)
@@ -56,3 +56,13 @@ jobs:
               make VERBOSE=1 -j`nproc`
               ;;
           esac
+      
+      - name: Build x86_64 AppImage
+        uses: AppImageCrafters/build-appimage@v1
+        
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: AppImage Build x86_64
+          path: |
+            *.AppImage
