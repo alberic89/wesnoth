@@ -46,7 +46,10 @@ jobs:
               -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_MYSQL=true \
               -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` .
             make VERBOSE=1 -j`nproc`
-
+      
+      - name: Install in AppDir
+        run: |
+          make install DESTDIR=AppDir -j`nproc`
       
       - name: Build x86_64 AppImage
         uses: AppImageCrafters/build-appimage@v1
