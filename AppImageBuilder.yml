@@ -1,9 +1,5 @@
 version: 1
 
-script:
-  - rm -rf ./AppDir || true
-  - make install DESTDIR=AppDir
-
 AppDir:
   path: ./AppDir
   app_info:
