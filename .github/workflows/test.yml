@@ -21,5 +21,6 @@ jobs:
     # Runs a single command using the runners shell
     - name: Test
       run: |
-        sed -i 's/{{BFW_VERSION}}/${{$(grep -o -E \'define\s(VERSION)\s"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[[:graph:]]*"\' src/wesconfig.h | grep -o -E \'[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[^"]*\')}}' AppImageBuilder.yaml
-        cat AppImageBuilder.yaml
+        export BFW_VERSION=$(grep -o -E 'define\s(VERSION)\s"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[[:graph:]]*"' src/wesconfig.h | grep -o -E '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[^"]*')
+        sed -i "s/'\$BFW_VERSION'/$BFW_VERSION/g" AppImageBuilder.yml
+        cat AppImageBuilder.yml
