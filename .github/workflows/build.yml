@@ -11,10 +11,10 @@ jobs:
       matrix:
         include:
           - tool: cmake
-            cc: clang
-            cxx: clang++
-            cfg: debug
-            lto: false
+            cc: gcc
+            cxx: g++
+            cfg: release
+            lto: true
     runs-on: ubuntu-20.04
     container:
       image: wesnoth/wesnoth:2204-master
@@ -37,26 +37,17 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: "recursive"
+          ref: ${{GITHUB_REF}}
 
       - name: Build wesnoth
         id: build
         run: |
-          case $TOOL in
-            scons)
-              scons wesnoth \
-                build="$CFG" ctool="$CC" cxxtool="$CXX" cxx_std="$CXX_STD" \
-                extra_flags_config="-pipe" strict=true forum_user_handler=true \
-                nls="$NLS" enable_lto="$LTO" force_color=true jobs=`nproc` --debug=time
-              ;;
-            cmake)
-              cmake -DENABLE_GAME=true  \
-                -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" \
-                -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_MYSQL=true \
-                -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` .
-              make conftests
-              make VERBOSE=1 -j`nproc`
-              ;;
-          esac
+            cmake -DENABLE_GAME=true  \
+              -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" -DCMAKE_INSTALL_PREFIX=/usr \
+              -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_MYSQL=true \
+              -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` .
+            make VERBOSE=1 -j`nproc`
+
       
       - name: Build x86_64 AppImage
         uses: AppImageCrafters/build-appimage@v1
