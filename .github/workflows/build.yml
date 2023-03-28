@@ -51,11 +51,11 @@ jobs:
         run: |
           make install DESTDIR=AppDir -j`nproc`
           export BFW_VERSION=$(grep -o -E 'define\s(VERSION)\s"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[[:graph:]]*"' src/wesconfig.h | grep -o -E '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[^"]*')
- 
+          sed -i "s/'\$BFW_VERSION'/$BFW_VERSION/g" AppImageBuilder.yml
       
       - name: Build x86_64 AppImage
         uses: AppImageCrafters/build-appimage@v1
-        
+ 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
