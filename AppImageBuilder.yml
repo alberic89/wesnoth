@@ -6,7 +6,7 @@ AppDir:
     id: org.wesnoth.Wesnoth
     name: Battle for Wesnoth
     icon: wesnoth-icon
-    version: '{{BFW_VERSION}}'
+    version: '$BFW_VERSION'
     exec: usr/bin/wesnoth
     exec_args: $@
   apt:
