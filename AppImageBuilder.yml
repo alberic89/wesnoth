@@ -6,7 +6,7 @@ AppDir:
     id: org.wesnoth.Wesnoth
     name: Battle for Wesnoth
     icon: wesnoth-icon
-    version: ${$(grep -o -E 'define\s(VERSION)\s"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[[:graph:]]*"' src/wesconfig.h | grep -o -E '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[^"]*')}
+    version: '{{BFW_VERSION}}'
     exec: usr/bin/wesnoth
     exec_args: $@
   apt:
@@ -135,5 +135,4 @@ AppDir:
 
 AppImage:
   arch: x86_64
-  sign-key: None
   update-information: guess
