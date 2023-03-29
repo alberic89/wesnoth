@@ -54,8 +54,8 @@ jobs:
       - name: Build x86_64 AppImage
         continue-on-error: true
         run: |
-          sudo apt install -y binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf python3-pip python3-setuptools squashfs-tools strace util-linux zsync
-          sudo pip3 install git+https://github.com/AppImageCrafters/appimage-builder.git
+          apt-get update && apt-get install -y binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf python3-pip python3-setuptools squashfs-tools strace util-linux zsync
+          pip3 install git+https://github.com/AppImageCrafters/appimage-builder.git
           export BFW_VERSION=$(grep -o -E 'define\s(VERSION)\s"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[[:graph:]]*"' src/wesconfig.h | grep -o -E '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[^"]*')
           appimage-builder --skip-tests
         
