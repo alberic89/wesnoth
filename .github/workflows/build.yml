@@ -16,16 +16,19 @@ jobs:
             cfg: release
             lto: true
     runs-on: ubuntu-20.04
-    env:
-      TOOL: ${{ matrix.tool }}
-      CFG: ${{ matrix.cfg }}
-      CC: ${{ matrix.cc }}
-      CXX: ${{ matrix.cxx }}
-      CXX_STD: 17
-      LTO: ${{ matrix.lto }}
-      NLS: false
-      CLICOLOR_FORCE: 1
-      DISPLAY: :99.0
+    container:
+      image: wesnoth/wesnoth:2204-master
+      options: "--tty --entrypoint /bin/bash" # docker create options
+      env:
+        TOOL: ${{ matrix.tool }}
+        CFG: ${{ matrix.cfg }}
+        CC: ${{ matrix.cc }}
+        CXX: ${{ matrix.cxx }}
+        CXX_STD: 17
+        LTO: ${{ matrix.lto }}
+        NLS: false
+        CLICOLOR_FORCE: 1
+        DISPLAY: :99.0
     defaults:
       run:
         shell: bash
