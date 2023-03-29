@@ -11,10 +11,10 @@ AppDir:
     exec_args: $@
   apt:
     sources:
-    - sourceline: deb http://fr.archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse
-    - sourceline: deb http://fr.archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse
-    - sourceline: deb http://fr.archive.ubuntu.com/ubuntu/ jammy-backports main restricted universe multiverse
-    - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security main restricted universe multiverse
+    - sourceline: deb https://deb.debian.org/debian bullseye main contrib non-free
+    - sourceline: deb https://deb.debian.org/debian bullseye-updates main contrib non-free
+    - sourceline: deb https://security.debian.org bullseye-security main contrib non-free
+    - sourceline: deb https://deb.debian.org/debian bullseye-backports main contrib non-free
 
     allow_unauthenticated: true
     arch: amd64
