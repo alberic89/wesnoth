@@ -16,19 +16,16 @@ jobs:
             cfg: release
             lto: true
     runs-on: ubuntu-20.04
-    container:
-      image: wesnoth/wesnoth:2204-master
-      options: --tty # docker create options
-      env:
-        TOOL: ${{ matrix.tool }}
-        CFG: ${{ matrix.cfg }}
-        CC: ${{ matrix.cc }}
-        CXX: ${{ matrix.cxx }}
-        CXX_STD: 17
-        LTO: ${{ matrix.lto }}
-        NLS: false
-        CLICOLOR_FORCE: 1
-        DISPLAY: :99.0
+    env:
+      TOOL: ${{ matrix.tool }}
+      CFG: ${{ matrix.cfg }}
+      CC: ${{ matrix.cc }}
+      CXX: ${{ matrix.cxx }}
+      CXX_STD: 17
+      LTO: ${{ matrix.lto }}
+      NLS: false
+      CLICOLOR_FORCE: 1
+      DISPLAY: :99.0
     defaults:
       run:
         shell: bash
@@ -58,6 +55,9 @@ jobs:
           sudo pip3 install git+https://github.com/AppImageCrafters/appimage-builder.git
           export BFW_VERSION=$(grep -o -E 'define\s(VERSION)\s"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[[:graph:]]*"' src/wesconfig.h | grep -o -E '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[^"]*')
           appimage-builder --skip-tests
+        
+      - run: |
+          ls -lh
  
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
