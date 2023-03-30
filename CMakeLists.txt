@@ -5,7 +5,6 @@ project(wesnoth)
 
 include(CheckCXXCompilerFlag)
 include(CTest)
-include(CPack)
 
 # use our own version of FindBoost.cmake and other Find* scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
