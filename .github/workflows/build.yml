@@ -41,6 +41,7 @@ jobs:
       - name: Set Version env
         run: |
           echo "BFW_VERSION=$(echo 'import data.tools.wesnoth.version as v;print(v.as_string)' | python)" >> $GITHUB_ENV
+          echo ${{ env.BFW_VERSION }}
   
       - name: Build wesnoth
         id: build
