@@ -18,7 +18,7 @@ AppDir:
     - sourceline: deb https://deb.debian.org/debian bullseye-backports main contrib non-free
 
     allow_unauthenticated: true
-    arch: amd64
+    arch: '$ARCH'
     include:
     - libboost-filesystem1.74.0
     - libboost-iostreams1.74.0
@@ -136,5 +136,5 @@ AppDir:
     - usr/share/doc/*/TODO.*
 
 AppImage:
-  arch: x86_64
+  arch: '$ARCH'
   update-information: guess
