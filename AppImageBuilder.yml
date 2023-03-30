@@ -9,6 +9,7 @@ AppDir:
     version: '$BFW_VERSION'
     exec: usr/bin/wesnoth
     exec_args: $@
+
   apt:
     sources:
     - sourceline: deb https://deb.debian.org/debian bullseye main contrib non-free
@@ -36,12 +37,6 @@ AppDir:
     - libsdl2-image-2.0-0
     - libsdl2-mixer-2.0-0
     - libstdc++6
-    - libcrypt1
-    - libssl1.1
-    - libpango-1.0-0
-    - libpangocairo-1.0-0
-    - libpangoft2-1.0-0
-    - libcairo2
 
     exclude:
     - fonts-adf-oldania
@@ -125,6 +120,12 @@ AppDir:
     - timgm6mb-soundfont
     - xkb-data
     - zlib1g
+    - libcrypt1
+    - libssl1.1
+    - libpango-1.0-0
+    - libpangocairo-1.0-0
+    - libpangoft2-1.0-0
+    - libcairo2
 
   files:
     exclude:
