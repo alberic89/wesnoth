@@ -1,11 +1,11 @@
-name: Build x86_64 AppImage
+name: Build x86_64 Packages
 
 on:
   release:
   workflow_dispatch:
 
 jobs:
-  AppImage_x86_64_Build:
+  Packages_x86_64_Build:
     strategy:
       fail-fast: false
       matrix:
@@ -40,7 +40,7 @@ jobs:
       
       - name: Set Version env
         run: |
-          echo "BFW_VERSION=$(grep -o -E 'define\s(VERSION)\s\"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[[:graph:]]*\"' src/wesconfig.h | grep -o -E '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[^\"]*')" >> $GITHUB_ENV
+          echo "BFW_VERSION=$(echo 'import data.tools.wesnoth.version as v;print(v.as_string)' | python)" >> $GITHUB_ENV
   
       - name: Build wesnoth
         id: build
