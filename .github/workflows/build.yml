@@ -65,7 +65,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: Wesnoth-${{BFW_VERSION}}.AppImage
+          name: Wesnoth-${{env.BFW_VERSION}}.AppImage
           path: |
             *.AppImage
       
@@ -88,6 +88,6 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: Wesnoth-${{BFW_VERSION}}.tar.gz
+          name: Wesnoth-${{env.BFW_VERSION}}.tar.gz
           path: |
             *.tar.gz
