@@ -37,7 +37,11 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: "recursive"
-
+      
+      - name: Set Version env
+        run: |
+          echo "BFW_VERSION=$(grep -o -E 'define\s(VERSION)\s\"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[[:graph:]]*\"' src/wesconfig.h | grep -o -E '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[^\"]*')" >> $GITHUB_ENV
+  
       - name: Build wesnoth
         id: build
         run: |
@@ -54,25 +58,21 @@ jobs:
       - name: Build x86_64 AppImage
         continue-on-error: true
         run: |
-          apt-get update && apt-get install -y binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf python3-pip python3-setuptools squashfs-tools strace util-linux zsync
-          pip3 install git+https://github.com/AppImageCrafters/appimage-builder.git
-          export BFW_VERSION=$(grep -o -E 'define\s(VERSION)\s"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[[:graph:]]*"' src/wesconfig.h | grep -o -E '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[^"]*')
+          apt-get update && apt-get install -y binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf python3-pip python3-setuptools squashfs-tools strace util-linux zsync pigz
+          pip3 install appimage-builder
           appimage-builder --skip-tests
-        
-      - run: |
-          ls -lh
  
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: Wesnoth AppImage
+          name: Wesnoth-${{$BFW_VERSION}}.AppImage
           path: |
             *.AppImage
       
       - name: Re-use cmake
         run: |
           cmake -DENABLE_GAME=true  \
-              -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" -DCMAKE_INSTALL_PREFIX=~/.local/ \
+              -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" -DCMAKE_INSTALL_PREFIX=/ \
               -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_MYSQL=true \
               -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` .
       
@@ -83,11 +83,11 @@ jobs:
       - name: Create Archive
         continue-on-error: true
         run: |
-          tar --create --file=wesnoth-$BFW_VERSION.tar.gz wesnoth-$BFW_VERSION
+          tar -czvf wesnoth-$BFW_VERSION.tar.gz --use-compress-program=pigz wesnoth-$BFW_VERSION/*
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: Wesnoth TAR GZ
+          name: Wesnoth-${{BFW_VERSION}}.tar.gz
           path: |
             *.tar.gz
