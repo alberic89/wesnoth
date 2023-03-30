@@ -84,7 +84,7 @@ jobs:
       - name: Create Archive
         continue-on-error: true
         run: |
-          tar -czvf wesnoth-$BFW_VERSION.tar.gz --use-compress-program=pigz wesnoth-$BFW_VERSION/*
+          tar -cvf wesnoth-$BFW_VERSION.tar.gz --use-compress-program=pigz wesnoth-$BFW_VERSION/*
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
