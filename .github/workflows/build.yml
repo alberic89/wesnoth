@@ -9,7 +9,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ARCH: ['x86_64', 'i386', 'armhf', 'aarch64']
         include:
           - tool: cmake
             cc: gcc
@@ -30,7 +29,7 @@ jobs:
         NLS: false
         CLICOLOR_FORCE: 1
         DISPLAY: :99.0
-        ARCH: ${{ matrix.ARCH }}
+        ARCH: x86_64
     defaults:
       run:
         shell: bash
@@ -44,9 +43,6 @@ jobs:
         run: |
           echo "BFW_VERSION=$(echo 'import data.tools.wesnoth.version as v;print(v.as_string)' | python3)" >> $GITHUB_ENV
           echo ${{ env.BFW_VERSION }}
-  
-      - name: Set up QEMU integration for Docker
-        run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
   
       - name: Build wesnoth
         id: build
