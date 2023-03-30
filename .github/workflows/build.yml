@@ -46,10 +46,6 @@ jobs:
               -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_MYSQL=true \
               -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` .
             make VERBOSE=1 -j`nproc`
-     
-      - name: Make CPake TGZ
-        run: |
-          cpack -G TGZ
       
       - name: Install in AppDir
         run: |
@@ -69,6 +65,29 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
+          name: Wesnoth AppImage
           path: |
             *.AppImage
+      
+      - name: Re-use cmake
+        run: |
+          cmake -DENABLE_GAME=true  \
+              -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" -DCMAKE_INSTALL_PREFIX=~/.local/ \
+              -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_MYSQL=true \
+              -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` .
+      
+      - name: Install for build archive
+        run: |
+          make install DESTDIR=wesnoth-$BFW_VERSION -j`nproc`
+      
+      - name: Create Archive
+        continue-on-error: true
+        run: |
+          tar --create --file=wesnoth-$BFW_VERSION.tar.gz wesnoth-$BFW_VERSION
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: Wesnoth TAR GZ
+          path: |
             *.tar.gz
