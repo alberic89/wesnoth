@@ -27,4 +27,7 @@ RUN apt install -y -qq openssl gdb xvfb bzip2 git scons cmake make ccache gcc g+
 RUN apt install -y -qq binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf python3-pip python3-setuptools squashfs-tools strace util-linux zsync pigz
 RUN pip3 install appimage-builder
 
+# multi-arch container
+RUN apt install -y -qq podman qemu-user-static
+
 WORKDIR /home/wesnoth-travis
