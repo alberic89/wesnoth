@@ -18,7 +18,7 @@ AppDir:
     - sourceline: deb https://deb.debian.org/debian bullseye-backports main contrib non-free
 
     allow_unauthenticated: true
-    arch: '$ARCH'
+    arch: '$ARCH_NAME'
     include:
     - libboost-filesystem1.74.0
     - libboost-iostreams1.74.0
