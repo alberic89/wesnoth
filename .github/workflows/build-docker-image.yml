@@ -24,4 +24,4 @@ jobs:
       run: |
         cd utils/dockerbuilds/CI/
         podman build . --file Dockerfile-base-2204-master --rm --tag wesnoth:latest
-        podman push docker.io/wesnoth/latest
+        podman push docker.io/alberic89/wesnoth:latest
