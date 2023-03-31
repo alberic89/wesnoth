@@ -23,4 +23,8 @@ RUN apt install -y -qq libpng16-16 libpng-dev libreadline6-dev libvorbis-dev lib
 # programs
 RUN apt install -y -qq openssl gdb xvfb bzip2 git scons cmake make ccache gcc g++ clang lld doxygen graphviz lua-check
 
+# appimage
+RUN apt install -y binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf python3-pip python3-setuptools squashfs-tools strace util-linux zsync pigz
+RUN pip3 install appimage-builder
+
 WORKDIR /home/wesnoth-travis
