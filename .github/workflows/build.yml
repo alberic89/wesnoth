@@ -8,7 +8,7 @@ jobs:
   Packages_x86_64_Build:
     strategy:
       fail-fast: false
-      matrix:
+      matrix:          
         include:
           - tool: cmake
             cc: gcc
@@ -30,6 +30,7 @@ jobs:
         CLICOLOR_FORCE: 1
         DISPLAY: :99.0
         ARCH: x86_64
+        ARCH_NAME: amd64
     defaults:
       run:
         shell: bash
