@@ -3,15 +3,25 @@ name: Docker Image CI
 on:
   workflow_dispatch:
 
+env:
+  REGISTRY_USER: alberic89
+  IMAGE_REGISTRY: docker.io
+  REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: wesnoth/wesnoth:2204-master
-      options: "--tty --entrypoint /bin/bash"
     steps:
     - uses: actions/checkout@v3
+    - name: Log in to Docker.io
+      uses: redhat-actions/podman-login@v1
+      with:
+        username: ${{ env.REGISTRY_USER }}
+        password: ${{ env.REGISTRY_PASSWORD }}
+        registry: ${{ env.IMAGE_REGISTRY }}
+    
     - name: Build the Docker image
       run: |
         cd utils/dockerbuilds/CI/
-        docker build . --file Dockerfile-base-2204-master --rm --tag wesnoth:$(date +%s)
+        podman build . --file Dockerfile-base-2204-master --rm --tag wesnoth:latest
+        podman push docker.io/wesnoth/latest
