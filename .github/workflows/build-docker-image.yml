@@ -6,10 +6,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: wesnoth/wesnoth:2204-master
+      options: "--tty --entrypoint /bin/bash"
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: |
         cd utils/dockerbuilds/CI/
         docker build . --file Dockerfile-base-2204-master --rm --tag wesnoth:$(date +%s)
-        ls
