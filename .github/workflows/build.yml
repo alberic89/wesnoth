@@ -50,7 +50,7 @@ jobs:
         run: |
             cmake -DENABLE_GAME=true  \
               -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" -DCMAKE_INSTALL_PREFIX=/usr \
-              -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_MYSQL=true \
+              -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true \
               -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` .
             make VERBOSE=1 -j`nproc`
       
@@ -76,7 +76,7 @@ jobs:
         run: |
           cmake -DENABLE_GAME=true  \
               -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" -DCMAKE_INSTALL_PREFIX=.local/ \
-              -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_MYSQL=true \
+              -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true \
               -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` .
       
       - name: Install for build archive
@@ -86,11 +86,13 @@ jobs:
       - name: Create Archive
         continue-on-error: true
         run: |
-          tar -cvf wesnoth-$BFW_VERSION.tar.gz --use-compress-program=pigz wesnoth-$BFW_VERSION/__w/wesnoth/wesnoth/.local
+          cd wesnoth-$BFW_VERSION/__w/wesnoth/wesnoth/
+          tar -cvf wesnoth-$BFW_VERSION.tar.gz --use-compress-program=pigz ./*
+          cd
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
           name: Wesnoth-${{env.BFW_VERSION}}.tar.gz
           path: |
-            *.tar.gz
+            wesnoth-$BFW_VERSION/__w/wesnoth/wesnoth/*.tar.gz
