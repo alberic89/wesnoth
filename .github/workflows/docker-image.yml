@@ -1,0 +1,29 @@
+name: Docker Image Build
+
+on:
+  workflow_dispatch:
+
+env:
+  REGISTRY_USER: alberic89
+  IMAGE_REGISTRY: docker.io
+  REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Log in to Docker.io
+      uses: redhat-actions/podman-login@v1
+      with:
+        username: ${{ env.REGISTRY_USER }}
+        password: ${{ env.REGISTRY_PASSWORD }}
+        registry: ${{ env.IMAGE_REGISTRY }}
+    
+    - name: Build the Docker Image
+      run: |
+        podman build . --file Dockerfile --rm --tag docker.io/alberic89/wesnoth:latest
+   
+    - name: Push the Docker Image
+      run: |
+        podman push docker.io/alberic89/wesnoth:latest
