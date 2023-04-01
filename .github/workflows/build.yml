@@ -86,13 +86,11 @@ jobs:
       - name: Create Archive
         continue-on-error: true
         run: |
-          cd wesnoth-$BFW_VERSION/__w/wesnoth/wesnoth/
-          tar -cvf wesnoth-$BFW_VERSION.tar.gz --use-compress-program=pigz ./*
-          cd
+          tar -cvf wesnoth-$BFW_VERSION.tar.gz --use-compress-program=pigz wesnoth-$BFW_VERSION/__w/wesnoth/wesnoth/*
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
           name: Wesnoth-${{env.BFW_VERSION}}.tar.gz
           path: |
-            wesnoth-$BFW_VERSION/__w/wesnoth/wesnoth/*.tar.gz
+            *.tar.gz
