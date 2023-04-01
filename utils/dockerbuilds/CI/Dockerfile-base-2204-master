@@ -21,13 +21,6 @@ RUN locale-gen en_US.UTF-8
 RUN apt install -y -qq libpng16-16 libpng-dev libreadline6-dev libvorbis-dev libcairo2 libcairo2-dev libpango-1.0-0 libpango1.0-dev libbz2-1.0 libbz2-dev zlib1g zlib1g-dev libpangocairo-1.0-0 libssl-dev libmysqlclient-dev expect-dev moreutils ca-certificates libcurl4-openssl-dev
 
 # programs
-RUN apt install -y -qq openssl gdb xvfb bzip2 git scons cmake make ccache gcc g++ clang lld doxygen graphviz lua-check
-
-# appimage
-RUN apt install -y -qq binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf python3-pip python3-setuptools squashfs-tools strace util-linux zsync pigz
-RUN pip3 install appimage-builder
-
-# multi-arch container
-RUN apt install -y -qq podman qemu-user-static
+RUN apt install -y -qq openssl gdb xvfb bzip2 git cmake make gcc g++ lld doxygen graphviz lua-check gettext
 
 WORKDIR /home/wesnoth-travis
