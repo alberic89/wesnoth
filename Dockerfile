@@ -1,7 +1,9 @@
 FROM docker.io/alberic89/wesnoth-build-env:latest
 RUN git clone https://github.com/wesnoth/wesnoth.git --recurse-submodules --depth=1
 RUN cd wesnoth
-RUN BFW_VERSION=$(echo 'import data.tools.wesnoth.version as v;print(v.as_string)' | python3)
+RUN cd data/tools/wesnoth
+RUN BFW_VERSION=$(echo 'import version;print(version.as_string)' | python3)
+RUN cd ../../../
 RUN BUILD_DATE=$(date)
 RUN mkdir build && cd build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release -DCXX_STD="g++" -DCMAKE_INSTALL_PREFIX="usr/" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO=true -DLTO_JOBS=`nproc` 
