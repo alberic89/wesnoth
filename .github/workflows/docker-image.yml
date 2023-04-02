@@ -26,8 +26,8 @@ jobs:
     
     - name: Build the Docker Image
       run: |
-        podman build . --file Dockerfile --rm --tag docker.io/alberic89/wesnoth:latest --platform linux/amd64 --platform linux/arm64
+        podman build . --file Dockerfile --rm --manifest docker.io/alberic89/wesnoth:latest --platform linux/amd64 --platform linux/arm64
    
     - name: Push the Docker Image
       run: |
-        podman push docker.io/alberic89/wesnoth:latest
+        podman-remote manifest push docker.io/alberic89/wesnoth:latest docker.io/alberic89/wesnoth:latest
