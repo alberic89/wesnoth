@@ -28,8 +28,8 @@ jobs:
     - name: Build the Docker image
       run: |
         cd utils/dockerbuilds/CI/
-        podman build . --file Dockerfile-base-2204-master --rm --tag docker.io/alberic89/wesnoth-build-env:latest --platform linux/amd64 --platform linux/arm64
+        podman build . --file Dockerfile-base-2204-master --rm --manifest docker.io/alberic89/wesnoth-build-env:latest --platform linux/amd64 --platform linux/arm64
    
     - name: Push the Image to DockerHub
       run: |
-         podman push docker.io/alberic89/wesnoth-build-env:latest
+         podman-remote manifest push docker.io/alberic89/wesnoth-build-env:latest docker.io/alberic89/wesnoth-build-env:latest
