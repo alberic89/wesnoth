@@ -32,4 +32,7 @@ jobs:
    
     - name: Push the Image to DockerHub
       run: |
-         podman-remote manifest push docker.io/alberic89/wesnoth-build-env:latest docker.io/alberic89/wesnoth-build-env:latest
+         podman manifest create docker.io/alberic89/wesnoth-build-env:latest
+         podman manifest add docker.io/alberic89/wesnoth-build-env:latest docker.io/alberic89/wesnoth-build-env:latest.amd64
+         podman manifest add docker.io/alberic89/wesnoth-build-env:latest docker.io/alberic89/wesnoth-build-env:latest.arm64
+         podman push docker.io/alberic89/wesnoth-build-env:latest
