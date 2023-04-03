@@ -28,12 +28,8 @@ jobs:
     - name: Build the Docker image
       run: |
         cd utils/dockerbuilds/CI/
-        podman build . --file Dockerfile-base-2204-master --rm --manifest docker.io/alberic89/wesnoth-build-env:latest.arm64 --platform linux/arm64
-        podman build . --file Dockerfile-base-2204-master --rm --manifest docker.io/alberic89/wesnoth-build-env:latest.amd64 --platform linux/amd64
+        podman build . --file Dockerfile-base-2204-master --rm --manifest wesnoth-build-env:latest --platform=linux/arm64,linux/amd64 --jobs=`nproc`
 
     - name: Push the Image to DockerHub
       run: |
-         podman manifest create docker.io/alberic89/wesnoth-build-env:latest
-         podman manifest add docker.io/alberic89/wesnoth-build-env:latest docker.io/alberic89/wesnoth-build-env:latest.amd64
-         podman manifest add docker.io/alberic89/wesnoth-build-env:latest docker.io/alberic89/wesnoth-build-env:latest.arm64
-         podman push docker.io/alberic89/wesnoth-build-env:latest
+         podman manifest push localhost/wesnoth-build-env:latest docker.io/alberic89/wesnoth-build-env:latest
