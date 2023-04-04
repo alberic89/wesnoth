@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Packages_x86_64_Build:
+  Build:
     strategy:
       fail-fast: false
       matrix:          
@@ -17,7 +17,7 @@ jobs:
             lto: true
     runs-on: ubuntu-20.04
     container:
-      image: wesnoth/wesnoth:2204-master
+      image: alberic89/wesnoth-build-env
       options: "--tty --entrypoint /bin/bash" # docker create options
       env:
         TOOL: ${{ matrix.tool }}
@@ -26,11 +26,9 @@ jobs:
         CXX: ${{ matrix.cxx }}
         CXX_STD: 17
         LTO: ${{ matrix.lto }}
-        NLS: false
+        NLS: true
         CLICOLOR_FORCE: 1
         DISPLAY: :99.0
-        ARCH: x86_64
-        ARCH_NAME: amd64
     defaults:
       run:
         shell: bash
@@ -43,50 +41,23 @@ jobs:
       - name: Set Version env
         run: |
           echo "BFW_VERSION=$(echo 'import data.tools.wesnoth.version as v;print(v.as_string)' | python3)" >> $GITHUB_ENV
-          echo ${{ env.BFW_VERSION }}
   
       - name: Build wesnoth
         id: build
         run: |
             cmake -DENABLE_GAME=true  \
-              -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" -DCMAKE_INSTALL_PREFIX=/usr \
+              -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" \
               -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true \
               -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` .
             make VERBOSE=1 -j`nproc`
-      
-      - name: Install in AppDir
-        run: |
-          make install DESTDIR=AppDir -j`nproc`
-      
-      - name: Build x86_64 AppImage
-        continue-on-error: true
-        run: |
-          apt-get update && apt-get install -y binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf python3-pip python3-setuptools squashfs-tools strace util-linux zsync pigz
-          pip3 install appimage-builder
-          appimage-builder --skip-tests
- 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: Wesnoth-${{env.BFW_VERSION}}.AppImage
-          path: |
-            *.AppImage
-      
-      - name: Re-use cmake
-        run: |
-          cmake -DENABLE_GAME=true  \
-              -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" -DCMAKE_INSTALL_PREFIX=.local/ \
-              -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true \
-              -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` .
       
       - name: Install for build archive
         run: |
           make install DESTDIR=wesnoth-$BFW_VERSION -j`nproc`
       
       - name: Create Archive
-        continue-on-error: true
         run: |
-          tar -cvf wesnoth-$BFW_VERSION.tar.gz --use-compress-program=pigz wesnoth-$BFW_VERSION/__w/wesnoth/wesnoth/*
+          tar -cvf wesnoth-$BFW_VERSION.tar.gz --use-compress-program=pigz wesnoth-$BFW_VERSION
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
