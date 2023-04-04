@@ -12,8 +12,5 @@ RUN apt autoremove --purge -y -qq
 RUN apt clean
 
 FROM scratch
-ARG BFW_VERSION
-ENV BFW_VERSION=$BFW_VERSION
-ENV BUILD_DATE=$(date)
 COPY --from=needs-squashing / /
-CMD echo "Run The Battle for Wesnoth $BFW_VERSION"; echo "Build date: $BUILD_DATE"; wesnoth
+CMD echo "Running The Battle for Wesnoth"; wesnoth
