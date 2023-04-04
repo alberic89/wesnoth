@@ -1,5 +1,4 @@
 ARG ARCH
-ARG BFW_VERSION
 FROM docker.io/alberic89/wesnoth-build-env:${ARCH} AS needs-squashing
 COPY .. /tmp/wesnoth/
 WORKDIR /tmp/wesnoth/
@@ -13,6 +12,7 @@ RUN apt autoremove --purge -y -qq
 RUN apt clean
 
 FROM scratch
+ARG BFW_VERSION
 ENV BFW_VERSION=$BFW_VERSION
 ENV BUILD_DATE=$(date)
 COPY --from=needs-squashing / /
