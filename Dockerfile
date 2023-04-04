@@ -1,7 +1,7 @@
 ARG ARCH
 ARG BFW_VERSION
 FROM docker.io/alberic89/wesnoth-build-env:${ARCH}
-COPY * /tmp/wesnoth/
+COPY .. /tmp/wesnoth/
 WORKDIR /tmp/wesnoth/
 RUN BUILD_DATE=$(date)
 RUN cmake . -DCMAKE_BUILD_TYPE=Release -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO=true -DLTO_JOBS=`nproc` 
