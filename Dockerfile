@@ -1,6 +1,6 @@
 ARG ARCH
 ARG BFW_VERSION
-FROM docker.io/alberic89/wesnoth-build-env:${ARCH}
+FROM docker.io/alberic89/wesnoth-build-env:${ARCH} AS needs-squashing
 COPY .. /tmp/wesnoth/
 WORKDIR /tmp/wesnoth/
 RUN BUILD_DATE=$(date)
