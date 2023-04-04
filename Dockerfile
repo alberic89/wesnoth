@@ -1,4 +1,5 @@
-FROM docker.io/alberic89/wesnoth-build-env
+ARG ARCH
+FROM docker.io/alberic89/wesnoth-build-env:${ARCH}
 COPY * /tmp/wesnoth/
 WORKDIR /tmp/wesnoth/
 RUN BFW_VERSION=$(echo 'import data.tools.wesnoth.version as v;print(v.as_string)' | python3)
