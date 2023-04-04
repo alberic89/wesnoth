@@ -10,6 +10,11 @@ env:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        include: 
+          - arch: "arm64"
+          - arch: "amd64"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -27,9 +32,8 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        cd utils/dockerbuilds/CI/
-        podman build . --file Dockerfile-base-2204-master --rm --manifest wesnoth-build-env:latest --platform=linux/arm64,linux/amd64 --jobs=`nproc`
+        podman build . --file utils/dockerbuilds/CI/Dockerfile-base-2204-master --rm --tag docker.io/alberic89/wesnoth-build-env:${{ matrix.arch }} --platform=linux/${{ matrix.arch }} --jobs=`nproc`
 
     - name: Push the Image to DockerHub
       run: |
-         podman manifest push localhost/wesnoth-build-env:latest docker.io/alberic89/wesnoth-build-env:latest
+         podman push docker.io/alberic89/wesnoth-build-env:${{ matrix.arch }}
