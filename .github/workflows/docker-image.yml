@@ -34,7 +34,7 @@ jobs:
     
     - name: Build the Docker Image
       run: |
-        podman build . --file Dockerfile --rm --tag wesnoth:${{ matrix.arch }} --build-arg ARCH=${{ matrix.arch }} BFW_VERSION=$(echo 'import data.tools.wesnoth.version as v;print(v.as_string)' | python3) --platform=linux/${{ matrix.arch }} --jobs=`nproc`
+        podman build . --file Dockerfile --rm --tag wesnoth:${{ matrix.arch }} --build-arg ARCH=${{ matrix.arch }} --build-arg BFW_VERSION=$(echo 'import data.tools.wesnoth.version as v;print(v.as_string)' | python3) --platform=linux/${{ matrix.arch }} --jobs=`nproc`
    
     - name: Push the Docker Image
       run: |
