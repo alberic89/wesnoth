@@ -17,6 +17,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt install -y -qq libpng16-16 libpng-dev libreadline6-dev libvorbis-dev libcairo2 libcairo2-dev libpango-1.0-0 libpango1.0-dev libbz2-1.0 libbz2-dev zlib1g zlib1g-dev libpangocairo-1.0-0 libssl-dev libmysqlclient-dev expect-dev moreutils ca-certificates libcurl4-openssl-dev
 
 # programs
-RUN apt install -y -qq openssl gdb xvfb bzip2 git cmake make gcc g++ lld doxygen graphviz lua-check gettext
+RUN apt install -y -qq openssl gdb xvfb bzip2 cmake make gcc g++ lld doxygen graphviz gettext pigz
 
 WORKDIR /home/wesnoth-travis
