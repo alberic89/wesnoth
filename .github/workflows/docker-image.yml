@@ -10,6 +10,11 @@ env:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        include: 
+          - arch: "arm64"
+          - arch: "amd64"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -17,6 +22,7 @@ jobs:
           submodules: "recursive"
 
     - name: Set up QEMU
+      if: matrix.arch == "arm64"
       uses: docker/setup-qemu-action@v2.1.0
 
     - name: Log in to Docker.io
@@ -28,8 +34,8 @@ jobs:
     
     - name: Build the Docker Image
       run: |
-        podman build . --file Dockerfile --rm --manifest wesnoth:latest --platform=linux/amd64,linux/arm64 --jobs=`nproc`
+        podman build . --file Dockerfile --rm --tag docker.io/alberic89/wesnoth:${{ matrix.arch }} --platform=linux/${{ matrix.arch }} --jobs=`nproc`
    
     - name: Push the Docker Image
       run: |
-        podman manifest push localhost/wesnoth:latest docker.io/alberic89/wesnoth:latest
+        podman push docker.io/alberic89/wesnoth:${{ matrix.arch }}
