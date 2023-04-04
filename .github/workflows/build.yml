@@ -17,7 +17,7 @@ jobs:
             lto: true
     runs-on: ubuntu-20.04
     container:
-      image: alberic89/wesnoth-build-env
+      image: alberic89/wesnoth-build-env:amd64
       options: "--tty --entrypoint /bin/bash" # docker create options
       env:
         TOOL: ${{ matrix.tool }}
