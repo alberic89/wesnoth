@@ -7,7 +7,7 @@ RUN cmake . -DCMAKE_BUILD_TYPE=Release -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO=tr
 RUN make install -j`nproc` 
 WORKDIR /home/wesnoth-travis
 RUN rm -rfv /tmp/wesnoth
-RUN apt purge -y -qq openssl gdb xvfb bzip2 git cmake make gcc g++ lld doxygen graphviz gettext pigz apt-utils libboost*
+RUN apt purge -y -qq openssl gdb xvfb bzip2 git cmake make gcc g++ lld doxygen graphviz gettext pigz apt-utils
 RUN apt autoremove --purge -y -qq
 RUN apt clean
 
