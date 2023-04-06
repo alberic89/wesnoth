@@ -3,9 +3,9 @@ name: Docker Image Build
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: [Docker Image CI]
+    workflows: [Build Tar Packages]
     types:
-      - completed
+      - requested
 
 env:
   REGISTRY_USER: alberic89
