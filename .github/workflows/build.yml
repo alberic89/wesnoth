@@ -21,12 +21,6 @@ jobs:
             cfg: release
             lto: true
             arch: amd64
-          - tool: cmake
-            cc: gcc
-            cxx: g++
-            cfg: release
-            lto: true
-            arch: arm64
     runs-on: ubuntu-20.04
     container:
       image: alberic89/wesnoth-build-env:${{ matrix.arch }}
