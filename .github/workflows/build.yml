@@ -1,12 +1,12 @@
-name: Build x86_64 Packages
+name: Build Tar Packages
 
 on:
   release:
   workflow_dispatch:
   workflow_run:
-    workflows: [Docker Image Build]
+    workflows: [Docker Image CI]
     types:
-      - requested
+      - completed
 
 jobs:
   Build:
@@ -19,9 +19,16 @@ jobs:
             cxx: g++
             cfg: release
             lto: true
+            arch: amd64
+          - tool: cmake
+            cc: gcc
+            cxx: g++
+            cfg: release
+            lto: true
+            arch: arm64
     runs-on: ubuntu-20.04
     container:
-      image: alberic89/wesnoth-build-env:amd64
+      image: alberic89/wesnoth-build-env:${{ matrix.arch }}
       options: "--tty --entrypoint /bin/bash" # docker create options
       env:
         TOOL: ${{ matrix.tool }}
@@ -61,11 +68,11 @@ jobs:
       
       - name: Create Archive
         run: |
-          tar -cvf wesnoth-$BFW_VERSION.tar.gz --use-compress-program=pigz wesnoth-$BFW_VERSION
+          tar -cvf wesnoth-$BFW_VERSION-${{ matrix.arch }}.tar.gz --use-compress-program=pigz wesnoth-$BFW_VERSION
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: Wesnoth-${{env.BFW_VERSION}}.tar.gz
+          name: Wesnoth-${{env.BFW_VERSION}}-${{ matrix.arch }}.tar.gz
           path: |
             *.tar.gz
