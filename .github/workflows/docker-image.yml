@@ -5,7 +5,7 @@ on:
   workflow_run:
     workflows: [Build Tar Packages]
     types:
-      - requested
+      - in_progress
 
 env:
   REGISTRY_USER: alberic89
