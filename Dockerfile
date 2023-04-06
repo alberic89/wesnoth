@@ -10,9 +10,7 @@ RUN rm -rfv /tmp/wesnoth
 RUN apt purge -y -qq openssl gdb xvfb bzip2 git cmake make gcc g++ lld doxygen graphviz gettext pigz apt-utils
 RUN apt autoremove --purge -y -qq
 RUN apt clean
-RUN echo "/home/wesnoth-travis/list.txt" >> /home/wesnoth-travis/list.txt
-RUN rm -dfv $(cat /home/wesnoth-travis/list.txt)
 
-FROM alpine
-COPY --from=needs-squashing / /
+FROM scratch
+COPY --from=needs-squashing /usr /usr
 CMD echo "Running The Battle for Wesnoth"; wesnoth
