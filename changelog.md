@@ -10,7 +10,7 @@
  ### Packaging
  ### Terrain
  ### Translations
-   * Updated translations: British English, Bulgarian, French, Spanish
+   * Updated translations: British English, Bulgarian, Czech, French, Spanish, Turkish
  ### Units
  ### User interface
    * The "Back To Turn" menu now replays the turn in singelplayer too. However,
@@ -20,6 +20,7 @@
  ### Miscellaneous and Bug Fixes
    * The replay viewer now also replays victory/defeat events properly #4667, #6180
    * Fixes undo stack getting corrupted by reloading #7253
+   * Removed unused `--color` switch from wesnoth_addon_manager
 
 ## Version 1.17.14
  ### Campaigns
