@@ -1,33 +1,22 @@
-FROM ubuntu:20.04 AS needs-squashing
+FROM ubuntu:20.04
 
-WORKDIR /home/wesnoth-travis
+RUN apt update
+
+RUN apt install -y -qq apt-utils
+
+# boost
+RUN apt install -y -qq libboost-filesystem-dev libboost-iostreams-dev libboost-locale-dev libboost-regex-dev libboost-program-options-dev libboost-random-dev libboost-system-dev libboost-coroutine-dev
+
+# SDL
+RUN apt install -y -qq libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
 
 # make tzdata not prompt for a timezone
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt update
-
-RUN apt clean
-
-# boost
-RUN apt install --download-only -o Dir::Cache::Archives=/home/wesnoth-travis -y -qq libboost-filesystem-dev libboost-iostreams-dev libboost-locale-dev libboost-regex-dev libboost-program-options-dev libboost-random-dev libboost-system-dev libboost-coroutine-dev
-
-# SDL
-RUN apt install --download-only -o Dir::Cache::Archives=/home/wesnoth-travis -y -qq libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
-
 # misc
-RUN apt install --download-only -o Dir::Cache::Archives=/home/wesnoth-travis -y -qq libpng-dev libreadline6-dev libvorbis-dev libcairo2-dev libpango1.0-dev libbz2-dev zlib1g zlib1g-dev libpangocairo-1.0-0 libssl-dev  libcurl4-openssl-dev
+RUN apt install -y -qq libpng-dev libreadline6-dev libvorbis-dev libcairo2-dev libpango1.0-dev libbz2-dev zlib1g zlib1g-dev libpangocairo-1.0-0 libssl-dev  libcurl4-openssl-dev
 
 # programs
-RUN apt install --download-only -o Dir::Cache::Archives=/home/wesnoth-travis -y -qq openssl bzip2 git cmake make gcc g++ lld doxygen gettext pigz
+RUN apt install -y -qq openssl bzip2 git cmake make gcc g++ lld doxygen gettext pigz
 
-RUN apt install -y -qq pigz
-
-RUN tar -cvf /home/wesnoth-travis/deps.tar.gz --use-compress-program=pigz *.deb && apt clean && rm -fv *.deb
-RUN apt install --download-only -o Dir::Cache::Archives=/home/wesnoth-travis -y -qq openssl gdb xvfb bzip2 git cmake make gcc g++ lld doxygen graphviz gettext pigz apt-utils
-RUN tar -cvf /home/wesnoth-travis/deps-rm.tar.gz --use-compress-program=pigz *.deb && apt clean && rm -fv *.deb
-
-FROM alpine:latest
 WORKDIR /home/wesnoth-travis
-COPY --from=needs-squashing /home/wesnoth-travis/ /home/wesnoth-travis/
-RUN apk update && apk add dpkg && tar -xvf deps.tar.gz && rm -fv deps.tar.gz && dpkg --add-architecture amd64 && dpkg -i *.deb && rm -fv *.deb
