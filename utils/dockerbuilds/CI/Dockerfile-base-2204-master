@@ -10,25 +10,29 @@ RUN apt update
 RUN apt clean
 
 # boost
-RUN apt download -y -qq libboost-filesystem-dev libboost-iostreams-dev libboost-locale-dev libboost-regex-dev libboost-program-options-dev libboost-random-dev libboost-system-dev libboost-coroutine-dev
+RUN apt install --download-only -y -qq libboost-filesystem-dev libboost-iostreams-dev libboost-locale-dev libboost-regex-dev libboost-program-options-dev libboost-random-dev libboost-system-dev libboost-coroutine-dev
 
 # SDL
-RUN apt download -y -qq libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
+RUN apt install --download-only -y -qq libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
 
 # misc
-RUN apt download -y -qq libpng-dev libreadline6-dev libvorbis-dev libcairo2-dev libpango1.0-dev libbz2-dev zlib1g zlib1g-dev libpangocairo-1.0-0 libssl-dev  libcurl4-openssl-dev
+RUN apt install --download-only -y -qq libpng-dev libreadline6-dev libvorbis-dev libcairo2-dev libpango1.0-dev libbz2-dev zlib1g zlib1g-dev libpangocairo-1.0-0 libssl-dev  libcurl4-openssl-dev
 
 # programs
-RUN apt download -y -qq openssl bzip2 git cmake make gcc g++ lld doxygen gettext pigz
+RUN apt install --download-only -y -qq openssl bzip2 git cmake make gcc g++ lld doxygen gettext pigz
 
 RUN apt install -y -qq pigz
 
 WORKDIR /var/cache/apt/archives/
 RUN tar -cvf /home/wesnoth-travis/deps.tar.gz --use-compress-program=pigz *.deb
+RUN apt clean
+RUN apt install --download-only -y -qq openssl gdb xvfb bzip2 git cmake make gcc g++ lld doxygen graphviz gettext pigz apt-utils
+RUN tar -cvf /home/wesnoth-travis/deps-rm.tar.gz --use-compress-program=pigz *.deb
+
 
 WORKDIR /home/wesnoth-travis
 
 FROM alpine:latest
 WORKDIR /home/wesnoth-travis
-COPY --from=needs-squashing /home/wesnoth-travis/deps.tar.gz /home/wesnoth-travis/deps.tar.gz
-RUN apk update && apk add dpkg && apk cache clean && tar -xvf deps.tar.gz && dpkg -i *.deb && rm *.deb
+COPY --from=needs-squashing /home/wesnoth-travis/deps*.tar.gz /home/wesnoth-travis/
+RUN apk update && apk add dpkg && apk cache clean && tar -xvf deps.tar.gz && rm deps.tar.gz && dpkg -i *.deb && rm *.deb
