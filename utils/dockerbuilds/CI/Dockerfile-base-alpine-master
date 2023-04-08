@@ -1,0 +1,13 @@
+FROM alpine:latest
+
+RUN apk update
+
+RUN apk add make cmake gcc g++ gettext openssl
+# boost
+RUN apk add boost-locale boost-filesystem boost-iostreams boost-random boost-regex boost-program_options boost-system boost-coroutine
+# sdl2
+RUN apk add sdl2 sdl2_image sdl2_mixer
+# misc
+RUN apk add fontconfig cairo pango libvorbis libbz2 libzip libssl3 libcrypto3 libcurl dbus readline
+
+WORKDIR /home/wesnoth-travis
