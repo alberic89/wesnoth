@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Base Image CI
 
 on:
   workflow_dispatch:
@@ -14,7 +14,13 @@ jobs:
       matrix:
         include: 
           - arch: "arm64"
+            os: "2004"
           - arch: "amd64"
+            os: "2004"
+          - arch: "arm64"
+            os: "alpine"
+          - arch: "amd64"
+            os: "alpine"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -33,8 +39,8 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        podman build . --file utils/dockerbuilds/CI/Dockerfile-base-2204-master --rm --tag docker.io/alberic89/wesnoth-build-env:${{ matrix.arch }} --platform=linux/${{ matrix.arch }} --jobs=`nproc`
+        podman build . --file utils/dockerbuilds/CI/Dockerfile-base-${{ matrix.os }}-master --rm --tag docker.io/alberic89/wesnoth-build-env:${{ matrix.arch }}-${{ matrix.os }} --platform=linux/${{ matrix.arch }} --jobs=`nproc`
 
     - name: Push the Image to DockerHub
       run: |
-         podman push docker.io/alberic89/wesnoth-build-env:${{ matrix.arch }}
+         podman push docker.io/alberic89/wesnoth-build-env:${{ matrix.arch }}-${{ matrix.os }}
