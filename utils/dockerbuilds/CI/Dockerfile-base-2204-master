@@ -30,4 +30,4 @@ RUN tar -cvf /home/wesnoth-travis/deps-rm.tar.gz --use-compress-program=pigz *.d
 FROM alpine:latest
 WORKDIR /home/wesnoth-travis
 COPY --from=needs-squashing /home/wesnoth-travis/ /home/wesnoth-travis/
-RUN apk update && apk add dpkg && apk cache clean && tar -xvf deps.tar.gz && rm -fv deps.tar.gz && dpkg -i *.deb && rm -fv *.deb
+RUN apk update && apk add dpkg && tar -xvf deps.tar.gz && rm -fv deps.tar.gz && dpkg -i *.deb && rm -fv *.deb
