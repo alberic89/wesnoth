@@ -59,7 +59,7 @@ jobs:
   
       - name: Build wesnoth
         run: |
-          podman run --env-host -v=`pwd`:/home/wesnoth-travis/wesnoth docker.io/alberic89/wesnoth-ci:${{ matrix.arch }}-ubuntu-20.04 /bin/sh /home/wesnoth-travis/wesnoth/build.sh (echo 'cmake -DENABLE_GAME=true -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` . && make -j`nproc` && make install DESTDIR=/home/wesnoth-travis/wesnoth/wesnoth-build -j`nproc`' | /bin/bash )
+          podman run --env-host -v=`pwd`:/home/wesnoth-travis/wesnoth docker.io/alberic89/wesnoth-ci:${{ matrix.arch }}-ubuntu-20.04 (echo 'cmake -DENABLE_GAME=true -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` . && make -j`nproc` && make install DESTDIR=/home/wesnoth-travis/wesnoth/wesnoth-build -j`nproc`' | /bin/bash )
       
       - name: Create Archive
         run: |
