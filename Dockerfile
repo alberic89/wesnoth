@@ -1,7 +1,9 @@
 ARG ARCH
 FROM docker.io/alberic89/wesnoth-ci:${ARCH}-alpine-latest AS needs-squashing
 WORKDIR /home/wesnoth-travis/wesnoth/
-RUN cmake . -DCMAKE_BUILD_TYPE=Release -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO=true -DLTO_JOBS=`nproc` && make install -j`nproc` 
+RUN cmake . -DCMAKE_BUILD_TYPE=Release -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO=true -DLTO_JOBS=`nproc` 
+RUN make -j`nproc` 
+RUN make install -j`nproc` 
 RUN apk del make cmake gcc g++ gettext
 
 FROM scratch
