@@ -3,7 +3,7 @@ FROM alpine:$OS_VERSION
 
 RUN apk update
 
-RUN apk add make cmake gcc g++ gettext
+RUN apk add make cmake gcc g++ gettext binutils-gold
 # boost
 RUN apk add boost-dev boost-locale boost-filesystem boost-iostreams boost-random boost-regex boost-program_options boost-system boost-coroutine
 # sdl2
