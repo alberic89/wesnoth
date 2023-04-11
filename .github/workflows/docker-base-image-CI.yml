@@ -43,8 +43,8 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        podman build . --file utils/dockerbuilds/CI/Dockerfile-base-${{ matrix.os }}-master --rm --tag docker.io/alberic89/wesnoth-CI:${{ matrix.arch }}-${{ matrix.os }}-${{ matrix.version }} --platform=linux/${{ matrix.arch }} --jobs=`nproc`
+        podman build . --file utils/dockerbuilds/CI/Dockerfile-base-${{ matrix.os }}-master --rm --tag docker.io/alberic89/wesnoth-ci:${{ matrix.arch }}-${{ matrix.os }}-${{ matrix.version }} --platform=linux/${{ matrix.arch }} --jobs=`nproc`
 
     - name: Push the Image to DockerHub
       run: |
-         podman push docker.io/alberic89/wesnoth-build-env:${{ matrix.arch }}-${{ matrix.os }}-${{ matrix.version }}
+         podman push docker.io/alberic89/wesnoth-ci:${{ matrix.arch }}-${{ matrix.os }}-${{ matrix.version }}
