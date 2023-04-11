@@ -4,13 +4,15 @@ on:
   release:
   workflow_dispatch:
   workflow_run:
-    workflows: [Docker Image CI]
+    workflows: [Docker Base Image CI]
     types:
       - completed
 
 jobs:
   Build:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }} or ${{ github.event == 'workflow_dispatch' }}
+    if: |
+      github.event.workflow_run.conclusion == 'success' || 
+      github.event_name == 'workflow_dispatch'
     strategy:
       fail-fast: false
       matrix:          
@@ -21,20 +23,23 @@ jobs:
             cfg: release
             lto: true
             arch: amd64
+          - tool: cmake
+            cc: gcc
+            cxx: g++
+            cfg: release
+            lto: true
+            arch: arm64
     runs-on: ubuntu-20.04
-    container:
-      image: alberic89/wesnoth-build-env:${{ matrix.arch }}
-      options: "--tty --entrypoint /bin/bash" # docker create options
-      env:
-        TOOL: ${{ matrix.tool }}
-        CFG: ${{ matrix.cfg }}
-        CC: ${{ matrix.cc }}
-        CXX: ${{ matrix.cxx }}
-        CXX_STD: 17
-        LTO: ${{ matrix.lto }}
-        NLS: true
-        CLICOLOR_FORCE: 1
-        DISPLAY: :99.0
+    env:
+      TOOL: ${{ matrix.tool }}
+      CFG: ${{ matrix.cfg }}
+      CC: ${{ matrix.cc }}
+      CXX: ${{ matrix.cxx }}
+      CXX_STD: 17
+      LTO: ${{ matrix.lto }}
+      NLS: true
+      CLICOLOR_FORCE: 1
+      DISPLAY: :99.0
     defaults:
       run:
         shell: bash
@@ -53,25 +58,23 @@ jobs:
           echo "BFW_VERSION=$(echo 'import data.tools.wesnoth.version as v;print(v.as_string)' | python3)" >> $GITHUB_ENV
   
       - name: Build wesnoth
-        id: build
         run: |
-            cmake -DENABLE_GAME=true  \
+          echo 'cmake -DENABLE_GAME=true  \
               -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" \
               -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true \
-              -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=`nproc` .
-            make VERBOSE=1 -j`nproc`
-      
-      - name: Install for build archive
-        run: |
-          make install DESTDIR=wesnoth-$BFW_VERSION -j`nproc`
+              -DENABLE_NLS="$NLS" -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS='`nproc`' . \
+              make VERBOSE=1 -j'`nproc`'
+              make install DESTDIR=/home/wesnoth-travis/wesnoth/wesnoth-'$BFW_VERSION' -j'`nproc` > build.sh
+          podman run -v=`pwd`:/home/wesnoth-travis/wesnoth docker.io/alberic89/wesnoth-ci:${{ matrix.arch }}-ubuntu-20.04 /bin/sh /home/wesnoth-travis/wesnoth/build.sh
       
       - name: Create Archive
         run: |
+          apt update && apt install -y -qq pigz
           tar -cvf wesnoth-$BFW_VERSION-${{ matrix.arch }}.tar.gz --use-compress-program=pigz wesnoth-$BFW_VERSION
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: Wesnoth-${{env.BFW_VERSION}}-${{ matrix.arch }}.tar.gz
+          name: Wesnoth-${{env.BFW_VERSION}}-ubuntu20.04-${{ matrix.arch }}.tar.gz
           path: |
             *.tar.gz
