@@ -8,8 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - env: |
-        NPROC: ${{ $(nproc) }}
-      run: |
-        echo ${{ $NPROC }}
+      - run: |
+          echo ${{ github.event_name }}
+        name: ${{ github.event_name }}
       
