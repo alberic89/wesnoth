@@ -1,5 +1,5 @@
 ARG OS_VERSION=latest
-FROM alpine:latest
+FROM alpine:$OS_VERSION
 
 RUN apk update
 
