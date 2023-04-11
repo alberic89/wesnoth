@@ -14,13 +14,17 @@ jobs:
       matrix:
         include: 
           - arch: "arm64"
-            os: "2004"
+            os: "ubuntu"
+            version: "20.04"
           - arch: "amd64"
-            os: "2004"
+            os: "ubuntu"
+            version: "20.04"
           - arch: "arm64"
             os: "alpine"
+            version: "latest"
           - arch: "amd64"
             os: "alpine"
+            version: "latest"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -39,8 +43,8 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        podman build . --file utils/dockerbuilds/CI/Dockerfile-base-${{ matrix.os }}-master --rm --tag docker.io/alberic89/wesnoth-build-env:${{ matrix.arch }}-${{ matrix.os }} --platform=linux/${{ matrix.arch }} --jobs=`nproc`
+        podman build . --file utils/dockerbuilds/CI/Dockerfile-base-${{ matrix.os }}-master --rm --tag docker.io/alberic89/wesnoth-CI:${{ matrix.arch }}-${{ matrix.os }}-${{ matrix.version }} --platform=linux/${{ matrix.arch }} --jobs=`nproc`
 
     - name: Push the Image to DockerHub
       run: |
-         podman push docker.io/alberic89/wesnoth-build-env:${{ matrix.arch }}-${{ matrix.os }}
+         podman push docker.io/alberic89/wesnoth-build-env:${{ matrix.arch }}-${{ matrix.os }}-${{ matrix.version }}
