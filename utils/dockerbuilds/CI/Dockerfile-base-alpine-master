@@ -1,13 +1,14 @@
+ARG OS_VERSION=latest
 FROM alpine:latest
 
 RUN apk update
 
-RUN apk add make cmake gcc g++ gettext openssl-dev
+RUN apk add make cmake gcc g++ gettext
 # boost
 RUN apk add boost-dev boost-locale boost-filesystem boost-iostreams boost-random boost-regex boost-program_options boost-system boost-coroutine
 # sdl2
 RUN apk add sdl2-dev sdl2_image-dev sdl2_mixer-dev
 # misc
-RUN apk add fontconfig-dev cairo-dev pango-dev libvorbis-dev libbz2 libzip-dev curl-dev dbus-dev readline-dev
+RUN apk add fontconfig-dev cairo-dev pango-dev libvorbis-dev libbz2 libzip-dev curl-dev dbus-dev readline-dev openssl-dev
 
 WORKDIR /home/wesnoth-travis
