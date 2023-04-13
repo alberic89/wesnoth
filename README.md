@@ -6,6 +6,7 @@
 |Docker build|[![Docker Build](https://github.com/alberic89/wesnoth/actions/workflows/docker-image.yml/badge.svg)](https://github.com/alberic89/wesnoth/actions/workflows/docker-image.yml)|
 |Tar package|[![Build Tar Packages](https://github.com/alberic89/wesnoth/actions/workflows/build.yml/badge.svg)](https://github.com/alberic89/wesnoth/actions/workflows/build.yml)|
 
+***This is a fork of the original project, for test automatic builds.***
 
 About
 =====
