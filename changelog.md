@@ -1,4 +1,4 @@
-## Version 1.17.15+dev
+## Version 1.17.16+dev
  ### Add-ons client
  ### Add-ons server
  ### Campaigns
@@ -8,11 +8,16 @@
  ### Packaging
  ### Terrain
  ### Translations
-   * Updated translations: British English, French, Italian
  ### Units
  ### User interface
  ### WML Engine
  ### Miscellaneous and Bug Fixes
+
+## Version 1.17.16
+ ### Translations
+   * Updated translations: British English, French, Italian
+ ### WML Engine
+   * Fixed a crash when encountering a scenario with missing sides (issues #7550,#7553,#7554)
 
 ## Version 1.17.15
  ### Multiplayer
