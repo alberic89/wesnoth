@@ -6,6 +6,8 @@ on:
     workflows: [Docker Base Image CI]
     types:
       - completed
+  push:
+    branches: [ master ]
 
 env:
   REGISTRY_USER: alberic89
