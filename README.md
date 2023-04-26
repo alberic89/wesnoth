@@ -1,11 +1,5 @@
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
-|Build|CI status|
-|------|---------|
-|Docker base container|[![Docker base CI](https://github.com/alberic89/wesnoth/actions/workflows/build-docker-image.yml/badge.svg?branch=master)](https://github.com/alberic89/wesnoth/actions/workflows/build-docker-image.yml)|
-|Docker build|[![Docker Build](https://github.com/alberic89/wesnoth/actions/workflows/docker-image.yml/badge.svg)](https://github.com/alberic89/wesnoth/actions/workflows/docker-image.yml)|
-|Tar package|[![Build Tar Packages](https://github.com/alberic89/wesnoth/actions/workflows/build.yml/badge.svg)](https://github.com/alberic89/wesnoth/actions/workflows/build.yml)|
-
 ***This is a fork of the original project, for test automatic builds.***
 
 About
