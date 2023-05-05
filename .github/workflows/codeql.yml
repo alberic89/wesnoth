@@ -75,8 +75,8 @@ jobs:
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, Go, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    #- name: Autobuild
-    #  uses: github/codeql-action/autobuild@v2
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
@@ -84,25 +84,25 @@ jobs:
     #   If the Autobuild fails above, remove it and uncomment the following three lines.
     #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
 
-    - name: Build wesnoth, wesnothd, campaignd and unit tests
-      id: build
-      run: |
-        case $TOOL in
-          scons)
-            scons wesnoth wesnothd campaignd boost_unit_tests \
-              build="$CFG" ctool="$CC" cxxtool="$CXX" cxx_std="$CXX_STD" \
-              extra_flags_config="-pipe" strict=true forum_user_handler=true \
-              nls=false enable_lto="$LTO" force_color=true jobs=2 --debug=time
-            ;;
-          cmake)
-            cmake -DENABLE_GAME=true -DENABLE_SERVER=true -DENABLE_CAMPAIGN_SERVER=true \
-              -DENABLE_TESTS=true -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" \
-              -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_MYSQL=true \
-              -DENABLE_NLS=false -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=2 .
-            make conftests
-            make VERBOSE=1 -j2
-            ;;
-        esac
+    #- name: Build wesnoth, wesnothd, campaignd and unit tests
+    #  id: build
+    #  run: |
+    #    case $TOOL in
+    #      scons)
+    #        scons wesnoth wesnothd campaignd boost_unit_tests \
+    #          build="$CFG" ctool="$CC" cxxtool="$CXX" cxx_std="$CXX_STD" \
+    #          extra_flags_config="-pipe" strict=true forum_user_handler=true \
+    #          nls=false enable_lto="$LTO" force_color=true jobs=2 --debug=time
+    #        ;;
+    #      cmake)
+    #        cmake -DENABLE_GAME=true -DENABLE_SERVER=true -DENABLE_CAMPAIGN_SERVER=true \
+    #          -DENABLE_TESTS=true -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" \
+    #          -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_MYSQL=true \
+    #          -DENABLE_NLS=false -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=2 .
+    #        make conftests
+    #        make VERBOSE=1 -j2
+    #        ;;
+    #    esac
          
          
     - name: Perform CodeQL Analysis
