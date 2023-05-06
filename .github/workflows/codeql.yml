@@ -87,8 +87,8 @@ jobs:
     - name: Install NodeJs
       if: ${{ matrix.language == 'javascript' }}
       run: |
-        apt update
-        apt install nodejs
+        apt update -qq -y
+        apt install nodejs -qq -y
     #- name: Build wesnoth, wesnothd, campaignd and unit tests
     #  id: build
     #  run: |
