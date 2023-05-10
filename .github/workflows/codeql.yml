@@ -63,7 +63,8 @@ jobs:
     - name: Install Pip
       if: ${{ matrix.language == 'python' }}
       run: |
-        apt install python3-pip
+        apt update -qq -y
+        apt install python3-pip -qq -y
       
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -80,7 +81,6 @@ jobs:
     - name: Install NodeJs
       if: ${{ matrix.language == 'javascript' }}
       run: |
-        apt update -qq -y
         apt install nodejs -qq -y
     
     # Autobuild attempts to build any compiled languages  (C/C++, C#, Go, or Java).
