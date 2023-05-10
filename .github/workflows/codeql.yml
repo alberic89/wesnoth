@@ -72,10 +72,21 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
-
+    - name: Install NodeJs
+      if: ${{ matrix.language == 'javascript' }}
+      run: |
+        apt update -qq -y
+        apt install nodejs -qq -y
+    
+    - name: Install Pip
+      if: ${{ matrix.language == 'python' }}
+      run: |
+        apt install python3-pip
+    
     # Autobuild attempts to build any compiled languages  (C/C++, C#, Go, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Autobuild
+      if: ${{ matrix.language != 'cpp' }}
       uses: github/codeql-action/autobuild@v2
 
     # ℹ️ Command-line programs to run using the OS shell.
@@ -84,30 +95,16 @@ jobs:
     #   If the Autobuild fails above, remove it and uncomment the following three lines.
     #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
     
-    - name: Install NodeJs
-      if: ${{ matrix.language == 'javascript' }}
+    - name: Build wesnoth, wesnothd, campaignd and unit tests
+      if: ${{ matrix.language == 'cpp' }}
+      id: build
       run: |
-        apt update -qq -y
-        apt install nodejs -qq -y
-    #- name: Build wesnoth, wesnothd, campaignd and unit tests
-    #  id: build
-    #  run: |
-    #    case $TOOL in
-    #      scons)
-    #        scons wesnoth wesnothd campaignd boost_unit_tests \
-    #          build="$CFG" ctool="$CC" cxxtool="$CXX" cxx_std="$CXX_STD" \
-    #          extra_flags_config="-pipe" strict=true forum_user_handler=true \
-    #          nls=false enable_lto="$LTO" force_color=true jobs=2 --debug=time
-    #        ;;
-    #      cmake)
-    #        cmake -DENABLE_GAME=true -DENABLE_SERVER=true -DENABLE_CAMPAIGN_SERVER=true \
-    #          -DENABLE_TESTS=true -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" \
-    #          -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_MYSQL=true \
-    #          -DENABLE_NLS=false -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO="$LTO" -DLTO_JOBS=2 .
-    #        make conftests
-    #        make VERBOSE=1 -j2
-    #        ;;
-    #    esac
+        cmake -DENABLE_GAME=true -DENABLE_SERVER=true -DENABLE_CAMPAIGN_SERVER=true \
+          -DENABLE_TESTS=true -DCMAKE_BUILD_TYPE="$CFG" -DCXX_STD="$CXX_STD" \
+          -DEXTRA_FLAGS_CONFIG="-pipe" -DENABLE_STRICT_COMPILATION=true -DENABLE_MYSQL=true \
+          -DENABLE_NLS=true -DFORCE_COLOR_OUTPUT=true -DENABLE_LTO=true -DLTO_JOBS=2 .
+        make conftests -j2
+        make -j2
          
          
     - name: Perform CodeQL Analysis
