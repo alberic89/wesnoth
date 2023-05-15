@@ -31,7 +31,6 @@
 #include "serialization/parser.hpp"
 #include "serialization/string_utils.hpp"
 #include "serialization/unicode.hpp"
-#include "game_config.hpp"
 #include "addon/validation.hpp"
 #include "server/campaignd/addon_utils.hpp"
 #include "server/campaignd/auth.hpp"
@@ -1943,7 +1942,7 @@ bool server::authenticate_forum(const config& addon, const std::string& passphra
 
 } // end namespace campaignd
 
-int run_campaignd(int argc, char** argv)
+static int run_campaignd(int argc, char** argv)
 {
 	campaignd::command_line cmdline{argc, argv};
 	std::string server_path = filesystem::get_cwd();
