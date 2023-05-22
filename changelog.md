@@ -1,4 +1,4 @@
-## Version 1.17.16+dev
+## Version 1.17.17+dev
  ### Add-ons client
  ### Add-ons server
  ### Campaigns
@@ -8,14 +8,22 @@
  ### Packaging
  ### Terrain
  ### Translations
-   * Updated translations: Arabic, British English, Czech, French, Italian, Spanish
  ### Units
  ### User interface
-   * Fixed main menu Language button not being refreshed after switching languages
-     without relaunching the game (issue #7437).
+ ### WML Engine
+ ### Miscellaneous and Bug Fixes
+
+## Version 1.17.17
+ ### Translations
+   * Updated translations: Arabic, British English, Czech, French, German, Italian, Spanish
+ ### User interface
+   * Fixed main menu Language button and Version label not being refreshed after
+     switching languages without relaunching the game (issue #7437).
+   * Fixed changing game resolution in Preferences not refreshing the user interface
+     as expected (issue #7436).
  ### WML Engine
    * Add support for distinct sub-achievements.
- ### Miscellaneous and Bug Fixes
+   * Add [filter_ability] usable instead of [abilities][tag name] to filter attributes including the type of ability used.
 
 ## Version 1.17.16
  ### Translations
@@ -141,10 +149,10 @@
  ### Campaigns
    * Sceptre of Fire
      * S9: Update for terrain codes introduced in 1.17.9 (issue #7210)
-   * Heir to the Throne: 
+   * Heir to the Throne:
      * S05B: Delurin now has traits Loyal + resilient + intelligent
    * Liberty:
-     * The non-loyal character Delurin now has traits resilient + intelligent 
+     * The non-loyal character Delurin now has traits resilient + intelligent
  ### Translations
    * Updated translations: Arabic, British English, Finnish, French
  ### Units
